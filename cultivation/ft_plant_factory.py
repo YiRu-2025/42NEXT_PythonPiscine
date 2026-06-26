@@ -14,18 +14,17 @@ class Plant:
     def aging(self) -> None:
         self.age += 1
 
+
 def main():
-    print("=== Garden Plant Growth ===")
-    rose = Plant("rose", 25.0, 30)
-    init_height = rose.height
-    rose.show()
-    for day in range(7):
-        print(f"=== Day {day + 1} ===")
-        rose.grow()
-        rose.aging()
-        print(rose.show())
-    print(f"Growth this week: {round(rose.height - init_height, 1)}cm")
+    rose = Plant("rose",25.0, 30)
+    oak = Plant("oak", 200.0, 365)
+    cactus = Plant("cactus", 5.0, 90)
+    sunflower = Plant("sunflower", 80.0, 45)
+    fern = Plant("fern", 15.0, 120)
+    garden = [rose, oak, cactus, sunflower, fern]
+    print("=== Plant Factory Output ===")
+    for plant in garden:
+        print(f"Created: {plant.show()}")
 
 if __name__ == "__main__":
     main()
-
