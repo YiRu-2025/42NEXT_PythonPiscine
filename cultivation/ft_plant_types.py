@@ -98,18 +98,21 @@ class Vegetable(Plant):
 
 def main():
     print("=== Garden Plant Types ===")
+
     rose = Flower("rose", 15, 10, "red")
-    oak = Tree("oak", 200.0, 365, 5.0)
-    tomato = Vegetable("tomato", 5, 10, "April")
-    print(f"==={rose.__class__.__name__}")
+    print(f"=== {rose.__class__.__name__}")
     rose.show()
     rose.bloom()
     print("")
-    print(f"==={oak.__class__.__name__}")
+    
+    oak = Tree("oak", 200.0, 365, 5.0)
+    print(f"=== {oak.__class__.__name__}")
     oak.show()
     oak.produce_shade()
     print("")
-    print(f"==={tomato.__class__.__name__}")
+
+    tomato = Vegetable("tomato", 5, 10, "April")
+    print(f"=== {tomato.__class__.__name__}")
     tomato.show()
     tomato.grow(days = 20, grow_rate = 2.1)
     
