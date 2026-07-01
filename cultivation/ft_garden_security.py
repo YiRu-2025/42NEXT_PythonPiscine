@@ -3,14 +3,14 @@ class Plant:
         self.name = name
         self._height = 0.0
         self._age = 0
-        self.set_height(height, init = True)
-        self.set_age(age, init = True)
+        self.set_height(height, init=True)
+        self.set_age(age, init=True)
 
     def error_msg(self, error_arg: str, init: bool = False) -> None:
         print(f"{self.name}: Error, {error_arg} can't be negative")
         if not init:
             print(f"{error_arg.capitalize()} update rejected")
-    
+
     def get_height(self) -> float:
         return self._height
 
@@ -25,7 +25,7 @@ class Plant:
         if not init:
             print(f"Height updated: {height}cm")
         return True
-    
+
     def set_age(self, age: int, init: bool = False) -> bool:
         if age < 0:
             self.error_msg("age", init)
@@ -34,9 +34,10 @@ class Plant:
         if not init:
             print(f"Age updated: {age} days")
         return True
-    
+
     def show(self) -> str:
-        return (f"{self.name.capitalize()}: {round(self.get_height(), 1)}cm, {self.get_age()} days old")
+        return (f"{self.name.capitalize()}: "
+                f"{round(self.get_height(), 1)}cm, {self.get_age()} days old")
 
 
 def main():

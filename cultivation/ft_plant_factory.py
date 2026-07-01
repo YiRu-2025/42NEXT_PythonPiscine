@@ -6,7 +6,8 @@ class Plant:
         self.grow_rate = round(height / age, 1)
 
     def show(self) -> str:
-        return (f"{self.name.capitalize()}: {round(self.height, 1)}cm, {self.age} days old")
+        return (f"{self.name.capitalize()}: "
+                f"{round(self.height, 1)}cm, {self.age} days old")
 
     def grow(self) -> None:
         self.height += self.grow_rate
@@ -16,7 +17,7 @@ class Plant:
 
 
 def main():
-    rose = Plant("rose",25.0, 30)
+    rose = Plant("rose", 25.0, 30)
     oak = Plant("oak", 200.0, 365)
     cactus = Plant("cactus", 5.0, 90)
     sunflower = Plant("sunflower", 80.0, 45)
@@ -25,6 +26,7 @@ def main():
     print("=== Plant Factory Output ===")
     for plant in garden:
         print(f"Created: {plant.show()}")
+
 
 if __name__ == "__main__":
     main()

@@ -1,5 +1,6 @@
 from typing import override
 
+
 class Plant:
     class Stats:
         def __init__(self):
@@ -8,29 +9,33 @@ class Plant:
             self._show_call = 0
 
         def display(self):
-            print(f"Stats: {self._grow_call} grow, {self._age_call} age, {self._show_call} show")
+            print(f"Stats: {self._grow_call} grow, "
+                  f"{self._age_call} age, {self._show_call} show")
 
     @staticmethod
     def age_check(age: int) -> None:
         print(f"Is {age} days more than a year? -> {age > 365}")
-    
+
     @classmethod
     def anonymous(cls):
-        return cls("Unknown plant",0.0, 0)
+        return cls("Unknown plant", 0.0, 0)
 
     def __init__(self, name: str, height: float, age: int) -> None:
         self.name = name
         self._height = 0.0
         self._age = 0
-        self.set_height(height, init = True)
-        self.set_age(age, init = True)
-        self._stats = Plant.Stats()
+        self._stats = self._make_stats()
+        self.set_height(height, init=True)
+        self.set_age(age, init=True)
+
+    def _make_stats(self):
+        return Plant.Stats()
 
     def error_msg(self, error_arg: str, init: bool = False) -> None:
         print(f"{self.name}: Error, {error_arg} can't be negative")
         if not init:
             print(f"{error_arg.capitalize()} update rejected")
-    
+
     def get_height(self) -> float:
         return self._height
 
@@ -45,7 +50,7 @@ class Plant:
         if not init:
             print(f"Height updated: {height}cm")
         return True
-    
+
     def set_age(self, age: int, init: bool = False) -> bool:
         if age < 0:
             self.error_msg("age", init)
@@ -57,37 +62,40 @@ class Plant:
 
     def show(self) -> None:
         self._stats._show_call += 1
-        print(f"{self.name.capitalize()}: {round(self.get_height(), 1)}cm, {self.get_age()} days old")
+        print(f"{self.name.capitalize()}: "
+              f"{round(self.get_height(), 1)}cm, {self.get_age()} days old")
 
     def grow(self) -> None:
         self._stats._grow_call += 1
-    
+
     def age(self) -> None:
         self._stats._age_call += 1
-    
+
 
 class Flower(Plant):
     def __init__(self, name: str, height: float, age: int, color: str) -> None:
         super().__init__(name, height, age)
         self.color = color
         self._bloomed = False
-    
+
     @override
     def show(self) -> None:
         super().show()
         print(f"Color: {self.color}")
         self.state()
 
-    def grow(self, grow_height: float) ->None:
-        if grow_height == 0: return
+    def grow(self, grow_height: float) -> None:
+        if grow_height == 0:
+            return
         super().grow()
-        self._height += grow_height
-    
+        self.set_height(self._height + grow_height)
+
     def age(self, grow_age: int) -> None:
-        if grow_age == 0: return
+        if grow_age == 0:
+            return
         super().age()
-        self._age += grow_age 
-    
+        self.set_age(self._age + grow_age)
+
     def state(self) -> None:
         if not self._bloomed:
             print(f"{self.name.capitalize()} has not bloomed yet")
@@ -100,19 +108,21 @@ class Flower(Plant):
         self.age(grow_age)
         self.show()
 
+
 class Tree(Plant):
     class Stats(Plant.Stats):
         def __init__(self):
             super().__init__()
             self._shade_call = 0
-        
+
         def display(self):
             super().display()
             print(f"{self._shade_call} shade")
 
-    def __init__(self, name: str, height: float, age: int, trunk_diameter: float) -> None:
+    def __init__(
+        self, name: str, height: float, age: int, trunk_diameter: float
+    ) -> None:
         super().__init__(name, height, age)
-        self._stats = Tree.Stats()
         self.trunk_diameter = trunk_diameter
 
     @override
@@ -125,10 +135,17 @@ class Tree(Plant):
         print(f"Tree {self.name.capitalize()} "
               "now produces a shade of "
               f"{self._height}cm long and "
-              f"{self.trunk_diameter}cm wide.")        
+              f"{self.trunk_diameter}cm wide.")
+
+    @override
+    def _make_stats(self):
+        return Tree.Stats()
+
 
 class Vegetable(Plant):
-    def __init__(self, name: str, height: float, age: int, harvest_season: str) -> None:
+    def __init__(
+        self, name: str, height: float, age: int, harvest_season: str
+    ) -> None:
         super().__init__(name, height, age)
         self.harvest_season = harvest_season
         self.nutritional_value = 0
@@ -140,17 +157,20 @@ class Vegetable(Plant):
         print(f"Nutritional value: {self.nutritional_value}")
 
     def grow(self, days: int, grow_rate: float = 2.1) -> None:
-        print(f"[make {self.name} grow and age for {days} days]")
-        self._height += days * grow_rate
-        self._age += days
+        super().grow()
+        self.set_height(self._height + days * grow_rate, init=True)
+        self.set_age(self._age + days, init=True)
         self.nutritional_value += days
         self.show()
 
+
 class Seed(Flower):
+    DEFAULT_SEEDS = 42
+
     def __init__(self, name, height, age, color):
         super().__init__(name, height, age, color)
         self.seeds = 0
-    
+
     @override
     def show(self):
         super().show()
@@ -158,13 +178,14 @@ class Seed(Flower):
 
     @override
     def bloom(self, grow_height, grow_age):
-        self.seeds = 42
+        self.seeds = self.DEFAULT_SEEDS
         super().bloom(grow_height, grow_age)
-        
+
 
 def display_stats(plant) -> None:
     print(f"[statistics for {plant.name.capitalize()}]")
     plant._stats.display()
+
 
 def main():
     print("=== Garden statistics ===")
@@ -178,7 +199,7 @@ def main():
     rose.show()
     display_stats(rose)
     print("[asking the rose to grow and bloom]")
-    rose.bloom(grow_height = 8)
+    rose.bloom(grow_height=8)
     display_stats(rose)
     print("")
 
@@ -194,8 +215,8 @@ def main():
     sunflower = Seed("sunflower", 80, 45, "yellow")
     print(f"=== {sunflower.__class__.__name__}")
     sunflower.show()
-    print("make sunflower grow, age and bloom")
-    sunflower.bloom(grow_height = 30, grow_age = 20)
+    print("[make sunflower grow, age and bloom]")
+    sunflower.bloom(grow_height=30, grow_age=20)
     display_stats(sunflower)
     print("")
 
@@ -203,6 +224,7 @@ def main():
     print("=== Anonymous")
     anon.show()
     display_stats(anon)
+
 
 if __name__ == "__main__":
     main()
