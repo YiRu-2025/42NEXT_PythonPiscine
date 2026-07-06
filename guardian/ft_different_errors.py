@@ -14,6 +14,7 @@ def garden_operations(operation_number: int) -> None:
     else:
         return
 
+
 def test_error_types():
     print("=== Garden Error Types Demo ===")
     for op_num in range(5):
@@ -24,6 +25,7 @@ def test_error_types():
         except Exception as err:
             print(f"Caught {err.__class__.__name__}: {err}")
     print("\nAll error types tested successfully!")
+
 
 if __name__ == "__main__":
     test_error_types()

@@ -1,6 +1,7 @@
 class GardenError(Exception):
     default_msg = "Unknown garden error"
-    def __init__(self, msg: str = None ) -> None:
+
+    def __init__(self, msg: str) -> None:
         super().__init__(msg or self.default_msg)
 
 
@@ -18,6 +19,7 @@ def water_plant(plant_name: str) -> None:
     else:
         raise PlantError(f"Invalid plant name to water: '{plant_name}'")
 
+
 def test_watering_system(factory: list[str]) -> None:
     print("Opening watering system")
     try:
@@ -30,6 +32,7 @@ def test_watering_system(factory: list[str]) -> None:
     finally:
         print("Closing watering system\n")
 
+
 def main():
     valid_tests = ["Tomato", "Lettuce", "Carrots"]
     invalid_test = ["Tomato", "lettuce", "Carrots"]
@@ -39,6 +42,7 @@ def main():
     print("Testing invalid plants...")
     test_watering_system(invalid_test)
     print("Cleanup always happens, even with errors!")
+
 
 if __name__ == "__main__":
     main()
