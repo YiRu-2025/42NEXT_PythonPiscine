@@ -1,20 +1,26 @@
 class GardenError(Exception):
-    default_msg = "Unknown garden error"
+    """Base exception for all garden-related errors."""
 
-    def __init__(self, msg: str) -> None:
-        super().__init__(msg or self.default_msg)
+    def __init__(self, message="Unknown garden error"):
+        super().__init__(message)
 
 
 class PlantError(GardenError):
-    default_msg = "Unknown plant error"
+    """Exception for plant-related problems."""
+
+    def __init__(self, message="Unknown plant error"):
+        super().__init__(message)
 
 
 class WaterError(GardenError):
-    default_msg = "Unknown water error"
+    """Exception for watering-related problems."""
+
+    def __init__(self, message="Unknown water error"):
+        super().__init__(message)
 
 
 def water_plant(plant_name: str) -> None:
-    if "A" <= plant_name[0] <= "Z":
+    if plant_name == plant_name.capitalize():
         print(f"Watering {plant_name}: [OK]")
     else:
         raise PlantError(f"Invalid plant name to water: '{plant_name}'")
@@ -28,7 +34,6 @@ def test_watering_system(factory: list[str]) -> None:
     except PlantError as err:
         print(f"Caught PlantError: {err}")
         print(".. ending tests and returning to main")
-        return
     finally:
         print("Closing watering system\n")
 

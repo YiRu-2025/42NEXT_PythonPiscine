@@ -1,52 +1,69 @@
 class GardenError(Exception):
-    default_msg = "Unknown garden error"
+    """Base exception for all garden-related errors."""
 
-    def __init__(self, msg: str) -> None:
-        super().__init__(msg or self.default_msg)
+    def __init__(self, message="Unknown garden error"):
+        super().__init__(message)
 
 
 class PlantError(GardenError):
-    default_msg = "Unknown plant error"
+    """Exception for plant-related problems."""
+
+    def __init__(self, message="Unknown plant error"):
+        super().__init__(message)
 
 
 class WaterError(GardenError):
-    default_msg = "Unknown water error"
+    """Exception for watering-related problems."""
+
+    def __init__(self, message="Unknown water error"):
+        super().__init__(message)
 
 
-def plant_check(plant: str, wilting: bool) -> None:
+def check_plant(plant_name=None, wilting=True):
+    if plant_name is None:
+        raise PlantError()
+
     if wilting:
-        raise PlantError(f"The {plant} plant is wilting!")
-    else:
-        print(f"The {plant} plant is good.")
+        raise PlantError(f"The {plant_name} plant is wilting!")
+
+    print(f"The {plant_name} plant is fine.")
 
 
-def water_check(level: int) -> None:
-    if level < 10:
+def check_water(water_level=None):
+    if water_level is None:
+        raise WaterError()
+
+    if water_level <= 0:
         raise WaterError("Not enough water in the tank!")
-    else:
-        print("Enough water in the tank.")
+
+    print("Enough water in the tank.")
 
 
-def test_custom_errors():
+def main():
     print("=== Custom Garden Errors Demo ===")
-    tests = [("PlantError", lambda: plant_check("tomato", True)),
-             ("WaterError", lambda: water_check(5))]
-    for name, test in tests:
-        print(f"\nTesting {name}...")
-        try:
-            test()
-        except PlantError as err:
-            print(f"Caught {err.__class__.__name__}: {err}")
-        except WaterError as err:
-            print(f"Caught {err.__class__.__name__}: {err}")
+
+    print("\nTesting PlantError...")
+    try:
+        check_plant("rose")
+    except PlantError as error:
+        print(f"Caught PlantError: {error}")
+
+    print("\nTesting WaterError...")
+    try:
+        check_water(0)
+    except WaterError as error:
+        print(f"Caught WaterError: {error}")
+
     print("\nTesting catching all garden errors...")
-    for name, test in tests:
+    for func in (lambda: check_plant("sunflower"),
+                 lambda: check_water(0)):
         try:
-            test()
-        except GardenError as err:
-            print(f"Caught GardenError: {err}")
+            func()
+        except GardenError as error:
+            print(f"Caught GardenError: {error}")
+
     print("\nAll custom error types work correctly!")
 
 
 if __name__ == "__main__":
-    test_custom_errors()
+    main()
