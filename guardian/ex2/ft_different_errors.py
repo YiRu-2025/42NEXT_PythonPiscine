@@ -26,6 +26,10 @@ def test_error_types() -> None:
             print(f"Caught {err.__class__.__name__}: {err}")
     print("\nAll error types tested successfully!")
 
+    try:
+        a = "str" + 42
+    except Exception as err:
+        print(f"Error: {err.__class__.__name__}{err}")
 
 if __name__ == "__main__":
     test_error_types()
