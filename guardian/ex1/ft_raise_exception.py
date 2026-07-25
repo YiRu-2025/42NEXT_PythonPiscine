@@ -7,7 +7,7 @@ def input_temperature(temp_str: str) -> int:
     return temp
 
 
-def test_temperature():
+def test_temperature() -> None:
     print("=== Garden Temperature ===")
     testing = ["25", "abc", "100", "-50"]
     for case in testing:
