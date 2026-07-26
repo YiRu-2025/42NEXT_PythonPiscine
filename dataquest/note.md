@@ -1,33 +1,23 @@
-# tdl
-check the code in ex3, understand the set operation and dict operation
-why * why dict.values(), how to use the set and dict methods correctly?
-
-
-
 # Python Collections (Arrays)
 
 There are four collection data types in the Python programming language:
 
     List is a collection which is ordered and changeable. Allows duplicate members.
     Tuple is a collection which is ordered and unchangeable. Allows duplicate members.
-    Set is a collection which is unordered, unchangeable*, and unindexed. No duplicate members.
-    Dictionary is a collection which is ordered** and changeable. No duplicate members.
+    Set is a collection which is unordered, unchangeable, and unindexed. No duplicate members.
+    Dictionary is a collection which is ordered and changeable. No duplicate members.
 
-## Python - Remove Set Items
-To remove an item in a set, use the remove(), or the discard() method.
-Note: If the item to remove does not exist, remove() will raise an error.
+## dict = {key1: value1, key2: value2, ...}
+a dictionary stores **key->value** pairs, has order, can change, no duplicate key
+### dict built-in methods
+- d.keys() returns all keys
+- d.values() only returns values
+- d.items() returns both key and value
 
-Remove "banana" by using the discard() method:
-Note: If the item to remove does not exist, discard() will NOT raise an error.
-
-You can also use the pop() method to remove an item, but this method will remove a random item, so you cannot be sure what item that gets removed.
-The return value of the pop() method is the removed item.
-
-The clear() method empties the set:
-The del keyword will delete the set completely:
-
-## Join Sets
-
+## set = {}
+a set stores **unique** values, no duplicate, no key, no order, no index.
+### set built-in methods
+#### Join Sets
 There are several ways to join two or more sets in Python.
 
 - The union() and update() methods joins all items from both sets.
@@ -66,3 +56,29 @@ Note: The ^ operator only allows you to join sets with sets, and not with other 
 
 The symmetric_difference_update() method will also keep all but the duplicates, but it will change the original set instead of returning a new set.
 
+#### Python - Remove Set Items
+To remove an item in a set, use the remove(), or the discard() method.
+Note: If the item to remove does not exist, remove() will raise an error.
+
+Remove "banana" by using the discard() method:
+Note: If the item to remove does not exist, discard() will NOT raise an error.
+
+You can also use the pop() method to remove an item, but this method will remove a random item, so you cannot be sure what item that gets removed.
+The return value of the pop() method is the removed item.
+
+The clear() method empties the set:
+The del keyword will delete the set completely:
+
+*a tip: packing and unpacking by adding a \* before the argument*
+| Context                                | Meaning                                |
+| -------------------------------------- | -------------------------------------- |
+| `*args` in a function definition       | **Pack** arguments into a tuple        |
+| `func(*args)` in a function call       | **Unpack** a tuple/list into arguments |
+| `*a_list` or an iterable datastructure | **Unpack** iterable object             |
+
+# generator
+lazy evalution to save the memory. only prepared when asking for it.
+a generator use `yield` not `return`
+then use `next()` to call it, will show the result one by one til `StopIteration`.
+like a water machine, tap it, give some, tap it again, give the same volume of water. Only if call/tap it, it shows the result.
+`yield` does not end the function immediately. It suspends it and remembers its state.

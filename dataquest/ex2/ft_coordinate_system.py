@@ -1,7 +1,7 @@
 import math
 
 def get_player_pos() -> tuple[float, float, float]:
-    while True:
+    while True: # for repeatedly asking for input, ends when reaches a return
         coord = input("Enter new coordinates as floats in format 'x,y,z': ")
         parts = coord.split(",")
 
@@ -9,9 +9,9 @@ def get_player_pos() -> tuple[float, float, float]:
             print("Invalid syntax")
             continue
         pos = []
-        for part in parts:
+        for part in parts: # detecting whether each param was successfully converted
             try:
-                pos.append(float(part.strip()))
+                pos.append(float(part.strip())) # skip the space before and after, convert and store the param
             except ValueError as err:
                 print(f"Error on parameter '{part}': {err}")
                 break
