@@ -1,5 +1,6 @@
 import sys
 
+
 def main() -> None:
     argv = sys.argv[1:]
     print("=== Player Score Analytics ===")
@@ -12,7 +13,8 @@ def main() -> None:
         except Exception:
             print(f"Invalid parameter: '{i}'")
     if player == 0:
-        print("No scores provided. Usage: python3 ft_score_analytics.py <score1> <score2> ...")
+        print("No scores provided. Usage: python3 "
+              "ft_score_analytics.py <score1> <score2> ...")
         return
     print(f"Scores processed: {scores}")
     print(f"Total players: {player}")
@@ -22,6 +24,7 @@ def main() -> None:
     print(f"Low score:{min(scores)}")
     print(f"Score range: {max(scores) - min(scores)}")
     return
+
 
 if __name__ == "__main__":
     main()

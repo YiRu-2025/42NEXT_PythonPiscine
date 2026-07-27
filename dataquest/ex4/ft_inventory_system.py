@@ -1,7 +1,8 @@
 import sys
 
-def parse_input(lines: list[str]) -> dict[str: int]:
-    inventory = {}
+
+def parse_input(lines: list[str]) -> dict[str, int]:
+    inventory: dict[str, int] = {}
     for pairs in lines:
         try:
             key, val = pairs.split(":")
@@ -22,11 +23,12 @@ def parse_input(lines: list[str]) -> dict[str: int]:
             print(f"Redundant item '{key}' - discarding")
             continue
     return inventory
-        
+
+
 def main() -> None:
     print("=== Inventory System Analysis ===")
     if len(sys.argv) == 1:
-        print(f"No input parameter")
+        print("No input parameter")
         return
 
     inventory = parse_input(sys.argv[1:])
@@ -51,8 +53,9 @@ def main() -> None:
         print(f"Item {k} represents {round(weight, 1)}%")
     print(f"Item most abundant: {most[0]} with quantity {most[1]}")
     print(f"Item least abundant: {least[0]} with quantity {least[1]}")
-    inventory.update({'magic_item' : 1})
+    inventory.update({'magic_item': 1})
     print(f"Updated inventory: {inventory}")
+
 
 if __name__ == "__main__":
     main()
