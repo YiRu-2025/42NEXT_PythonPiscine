@@ -47,7 +47,7 @@ def main() -> None:
         nf.write(new_cont)
         nf.close()
         print(f"Data saved in file '{new_file}'")
-    except PermissionError as e:
+    except (IsADirectoryError, PermissionError) as e:
         print(f"[STDERR] Error opening file '{new_file}': {e}",
               file=sys.stderr)
         return
