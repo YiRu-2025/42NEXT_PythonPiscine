@@ -1,0 +1,8 @@
+from .capabilityfactory import (CreatureFactory,
+                                HealingCreatureFactory,
+                                TransformCreatureFactory)
+
+
+__all__ = ["CreatureFactory",
+           "HealingCreatureFactory",
+           "TransformCreatureFactory"]
