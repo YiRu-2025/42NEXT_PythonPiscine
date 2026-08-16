@@ -1,5 +1,8 @@
 import importlib, sys
 from typing import Any
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
 
 
 PACKAGES = {
@@ -29,78 +32,36 @@ def check_installation() -> bool:
     return True
 
 
-def generate_data() -> Any:
-    import numpy as np
 
-    gen = np.random.default_rng(42)
-    a = gen.normal(75,12,1000)
-    b = gen.normal(50,10,1000)
-    c = gen.uniform(0,100,1000)
-    return np.column_stack((a, b, c))
-
-
-def analyze_data(data: Any) -> Any:
-    import pandas as pd
-
-    df = pd.DataFrame(data, columns=["a", "b", "c"])
+def analyze_data(points: int = 1000) -> Any:
     print()
     print("Analyzing Matrix data...")
+    gen = np.random.default_rng(42)
+    a = gen.normal(75, 12, points)
+    df = pd.DataFrame({"a": a})
     print(f"Processing {len(df)} data points...")
-
-    print()
-    print("Matrix data statistics:")
-    print(df.describe())
-
-    print()
-    print(
-        f"Average system load: "
-        f"{df['a'].mean():.2f}"
-    )
-    print(
-        f"Average threat level: "
-        f"{df['b'].mean():.2f}"
-    )
-    print(
-        f"Average anomaly score: "
-        f"{df['c'].mean():.2f}"
-    )
-
-    high_threat = df[df["b"] > 60]
-
-    print(f"High-threat data points: {len(high_threat)}")
-
     return df
-
+ 
+ 
 def visualize_data(df: Any) -> None:
-    import matplotlib.pyplot as plt
-
     print("Generating visualization...")
-
-    plt.figure(figsize=(10, 6))
-
-    # plt.plot(
-    #     df.index,
-    #     df["a"],
-    #     label="System Load",
-    # )
-    # plt.plot(
-    #     df.index,
-    #     df["b"],
-    #     label="Threat Level",
-    # )
-    plt.plot(
-        df.index,
-        df["c"],
-        label="Anomaly Score",
-    )
-
-    plt.title("Matrix Data Analysis")
-    plt.xlabel("Data Point")
-    plt.ylabel("Value")
+ 
+    data = df["a"]
+ 
+    plt.figure(figsize=(8, 5))
+    plt.hist(data, bins=30, color="green", edgecolor="black", alpha=0.7, density=True)
+    mean = data.mean()
+    std = data.std()
+    x = np.linspace(data.min(), data.max(), 200)
+    trend = (1 / (std * np.sqrt(2 * np.pi))) * np.exp(-0.5 * ((x - mean) / std) ** 2)
+    plt.plot(x, trend, color="red", linewidth=2, label="Trend")
+ 
+    plt.title("Data Distribution")
+    plt.xlabel("Value")
+    plt.ylabel("Density")
+    plt.grid(True, alpha=0.3)
     plt.legend()
-    plt.grid(True)
-    plt.tight_layout()
-
+ 
     plt.savefig("matrix_analysis.png")
     plt.close()
 
@@ -110,13 +71,12 @@ def main():
 
     if not check_installation():
         sys.exit(1)
-    try:
-        matrix_data = generate_data()
-        dataframe = analyze_data(matrix_data)
+    try: 
+        dataframe = analyze_data()
         visualize_data(dataframe)
     except Exception as e:
         print(e)
-    print("Analysis complete!")
+    print("\nAnalysis complete!")
     print("Results saved to: matrix_analysis.png")
 
 if __name__ == "__main__":
