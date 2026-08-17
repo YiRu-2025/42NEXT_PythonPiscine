@@ -1,8 +1,5 @@
 import importlib, sys
 from typing import Any
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
 
 
 PACKAGES = {
@@ -34,6 +31,9 @@ def check_installation() -> bool:
 
 
 def analyze_data(points: int = 1000) -> Any:
+    import numpy as np
+    import pandas as pd
+
     print()
     print("Analyzing Matrix data...")
     gen = np.random.default_rng(42)
@@ -44,8 +44,10 @@ def analyze_data(points: int = 1000) -> Any:
  
  
 def visualize_data(df: Any) -> None:
+    import numpy as np
+    import matplotlib.pyplot as plt
+
     print("Generating visualization...")
- 
     data = df["a"]
  
     plt.figure(figsize=(8, 5))

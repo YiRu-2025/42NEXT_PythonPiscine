@@ -9,6 +9,110 @@ Known container or package management tool: Conda / Anaconda / Docker
 - ex1: **program dependency & package management** - build a data analysis tool that requires external libraries.
 - ex2: secure configuration system
 
+# EX0: System Environment & Virtual Env Creation
+## import modules: sys, os, site
+### sys module -- System-specific parameters and functions
+This module provides access to some variables used or maintained by the interpreter and to functions that interact strongly with the interpreter. It is always available. Unless explicitly noted otherwise, all variables are read-only
+
+**sys.base_prefix**
+
+Equivalent to prefix, but referring to the base Python installation.
+
+When running under virtual environment, prefix gets overwritten to the virtual environment prefix. base_prefix, conversely, does not change, and always points to the base Python installation. Refer to Virtual Environments for more information.
+
+**sys.executable**
+
+A string giving the absolute path of the executable binary for the Python interpreter, on systems where this makes sense. If Python is unable to retrieve the real path to its executable, sys.executable will be an empty string or None.
+
+**sys.exit([arg])**
+
+Raise a SystemExit exception, signaling an intention to exit the interpreter.
+
+The optional argument arg can be an integer giving the exit status (defaulting to zero), or another type of object. If it is an integer, zero is considered “successful termination” and any nonzero value is considered “abnormal termination” by shells and the like. Most systems require it to be in the range 0–127, and produce undefined results otherwise. Some systems have a convention for assigning specific meanings to specific exit codes, but these are generally underdeveloped; Unix programs generally use 2 for command line syntax errors and 1 for all other kinds of errors. If another type of object is passed, None is equivalent to passing zero, and any other object is printed to stderr and results in an exit code of 1. In particular, sys.exit("some error message") is a quick way to exit a program when an error occurs.
+
+Since exit() ultimately “only” raises an exception, it will only exit the process when called from the main thread, and the exception is not intercepted. Cleanup actions specified by finally clauses of try statements are honored, and it is possible to intercept the exit attempt at an outer level.
+
+**sys.modules**
+
+This is a dictionary that maps module names to modules which have already been loaded. This can be manipulated to force reloading of modules and other tricks. However, replacing the dictionary will not necessarily work as expected and deleting essential items from the dictionary may cause Python to fail. If you want to iterate over this global dictionary always use sys.modules.copy() or tuple(sys.modules) to avoid exceptions as its size may change during iteration as a side effect of code or activity in other threads.
+
+**sys.path**
+
+A list of strings that specifies the search path for modules. Initialized from the environment variable PYTHONPATH, plus an installation-dependent default.
+
+By default, as initialized upon program startup, a potentially unsafe path is prepended to sys.path (before the entries inserted as a result of PYTHONPATH):
+- python -m module command line: prepend the current working directory.
+- python script.py command line: prepend the script’s directory. If it’s a symbolic link, resolve symbolic links.
+- python -c code and python (REPL) command lines: prepend an empty string, which means the current working directory.
+
+To not prepend this potentially unsafe path, use the -P command line option or the PYTHONSAFEPATH environment variable.
+
+A program is free to modify this list for its own purposes. Only strings should be added to sys.path; all other data types are ignored during import.
+
+See also
+
+    Module site This describes how to use .pth files to extend sys.path.
+
+**sys.prefix**
+A string giving the site-specific directory prefix where the platform independent Python files are installed; on Unix, the default is /usr/local. This can be set at build time with the --prefix argument to the configure script. See Installation paths for derived paths.
+
+    Note: If a virtual environment is in effect, this prefix will point to the virtual environment. The value for the Python installation will still be available, via base_prefix. Refer to Virtual Environments for more information.
+
+*Changed in version 3.14*: When running under a virtual environment, prefix and exec_prefix are now set to the virtual environment prefix by the path initialization, instead of site. This means that prefix and exec_prefix always point to the virtual environment, even when site is disabled (-S).
+
+**sys.version**
+
+A string containing the version number of the Python interpreter plus additional information on the build number and compiler used. This string is displayed when the interactive interpreter is started. **Do not extract version information out of it, rather, use version_info and the functions provided by the platform module.**
+
+**sys.version_info**
+
+A tuple containing the five components of the version number: major, minor, micro, releaselevel, and serial. All values except releaselevel are integers; the release level is 'alpha', 'beta', 'candidate', or 'final'. The version_info value corresponding to the Python version 2.0 is (2, 0, 0, 'final', 0). The components can also be accessed by name, so sys.version_info[0] is equivalent to sys.version_info.major and so on.
+
+### os — Miscellaneous operating system interfaces
+This module provides a portable way of using operating system dependent functionality. If you just want to read or write a file see open(), if you want to manipulate paths, see the os.path module, and if you want to read all the lines in all the files on the command line see the fileinput module. For creating temporary files and directories see the tempfile module, and for high-level file and directory handling see the shutil module.
+
+#### os.path — Common pathname manipulations
+**os.path.basename(path, /)**
+
+Return the base name of pathname path. This is the second element of the pair returned by passing path to the function split(). Note that the result of this function is different from the Unix basename program; where basename for '/foo/bar/' returns 'bar', the basename() function returns an empty string ('').
+
+### site — Site-specific configuration hook
+**site.getsitepackages(prefixes=None)**
+
+Return a list containing all global site-packages directories.
+
+For each directory present in prefixes (or PREFIXES if prefixes is None), this function will find its site-packages subdirectory depending on the system environment, and will return a list of full paths.
+
+# EX1: dependency management
+`pip` installs Python packages. `Poetry` manages a Python project's dependencies, virtual environment, lock file, and packaging.
+
+- Uses pandas for data manipulation
+- Uses numpy for numerical computations and to generate your simulated matrix data. It must be the source of your dataset — not hardcoded lists or range().
+- Uses matplotlib for visualization
+
+The basic of matplotlib to visualize data:
+```python
+fig, ax = plt.subplots()
+
+ax.plot(x, y)
+
+ax.set_title("My graph")
+ax.set_xlabel("X")
+ax.set_ylabel("Y")
+
+plt.show()
+```
+Everything else is an extension of that pattern.
+
+- fig: the entire image/window
+- ax: the actual graph to draw things
+
+- operations:
+    - ax.plot(x, y): line
+    - ax.scatter(x, y)
+    - ax.hist(data): histogram
+    - ax.bar(categories, values): bar chart
+    - ax.imshow(image): image
 
 # EX2: Oracle
 
@@ -27,46 +131,12 @@ This project demonstrates how to:
 * Handle missing or invalid configuration safely.
 * Keep secrets out of version control.
 
-## Project Files
+**python-dotenv**
+Reads the key,value pair from .env and adds them to environment variable. It is great of managing app settings during development and in production using 12-factor principles.
 
-```text
-oracle.py
-.env
-.env.example
-.gitignore
-requirements.txt
-README.md
-```
-
-### `oracle.py`
-
-The main Python program. It uses `python-dotenv` to load settings from `.env` and then reads the configuration through `os.environ`.
-
-It validates all required configuration variables and checks that `MATRIX_MODE` is either `development` or `production`.
-
-### `.env`
-
-Contains local development configuration.
-
-**This file should never be committed to Git**, because it may contain sensitive information such as API keys or database credentials.
-
-### `.env.example`
-
-A safe template showing which configuration variables are required.
-
-It should contain placeholders rather than real secrets.
-
-### `.gitignore`
+**.gitignore**
 
 Prevents `.env` and other generated Python files from being committed to version control.
-
-### `requirements.txt`
-
-Contains the project's Python dependency:
-
-```text
-python-dotenv>=1.0,<2
-```
 
 ## Configuration
 
@@ -79,119 +149,6 @@ The application requires five environment variables:
 | `API_KEY`       | Secret key used for external services                  |
 | `LOG_LEVEL`     | Logging verbosity such as `DEBUG` or `INFO`            |
 | `ZION_ENDPOINT` | URL used to connect to the Zion network                |
-
-## Development Configuration
-
-For local development, create a `.env` file:
-
-```env
-MATRIX_MODE=development
-DATABASE_URL=sqlite:///./matrix-dev.db
-API_KEY=development-placeholder-key
-LOG_LEVEL=DEBUG
-ZION_ENDPOINT=https://zion.example.test/network
-```
-
-Install the dependency:
-
-```bash
-python -m pip install -r requirements.txt
-```
-
-Then run:
-
-```bash
-python oracle.py
-```
-
-Expected output:
-
-```text
-ORACLE STATUS: Reading the Matrix...
-Configuration loaded:
-Mode: development
-Database: Connected to local instance
-API Access: Authenticated
-Log Level: DEBUG
-Zion Network: Online
-Environment security check:
-[OK] No hardcoded secrets detected
-[OK] .env file properly configured
-[OK] Production overrides available
-The Oracle sees all configurations.
-```
-
-## Production Configuration
-
-Production settings should normally be supplied by the deployment environment rather than committing a production `.env` file.
-
-For example:
-
-```bash
-MATRIX_MODE=production \
-DATABASE_URL="postgresql://..." \
-API_KEY="production-secret" \
-LOG_LEVEL=INFO \
-ZION_ENDPOINT="https://zion.example.com/network" \
-python oracle.py
-```
-
-The application will use these environment variables instead of the development values in `.env`.
-
-The output will show the environment difference:
-
-```text
-Configuration loaded:
-Mode: production
-Database: Connected to production datastore
-API Access: Authenticated
-Log Level: INFO
-Zion Network: Online
-```
-
-## How Configuration Loading Works
-
-The program uses `python-dotenv`:
-
-```python
-from dotenv import load_dotenv
-
-load_dotenv()
-```
-
-This loads variables from `.env` into the process environment.
-
-The program then accesses them using Python's standard `os` module:
-
-```python
-import os
-
-mode = os.environ["MATRIX_MODE"]
-api_key = os.environ["API_KEY"]
-```
-
-This keeps configuration separate from the application code.
-
-## Error Handling
-
-The program checks that all required variables exist.
-
-If configuration is missing, it reports the problem instead of continuing with incomplete settings:
-
-```text
-CONFIGURATION ERROR: Missing required configuration: API_KEY
-```
-
-It also validates `MATRIX_MODE`.
-
-Only these values are accepted:
-
-```text
-development
-production
-```
-
-An invalid value produces a configuration error.
 
 ## Security
 
@@ -251,55 +208,3 @@ The project demonstrates environment-specific behavior through `MATRIX_MODE`.
 * Can use a less verbose logging level such as `INFO`.
 * Secrets can be supplied by the deployment environment.
 * No production secrets need to be stored in the source repository.
-
-## Requirements
-
-* Python 3.x
-* `python-dotenv`
-
-Install dependencies with:
-
-```bash
-python -m pip install -r requirements.txt
-```
-
-## Running the Program
-
-Development:
-
-```bash
-python oracle.py
-```
-
-Production example:
-
-```bash
-MATRIX_MODE=production \
-DATABASE_URL="your-production-database-url" \
-API_KEY="your-production-api-key" \
-LOG_LEVEL=INFO \
-ZION_ENDPOINT="https://your-production-endpoint" \
-python oracle.py
-```
-
-## Learning Goals
-
-This project demonstrates several important configuration-management practices:
-
-1. **Separate configuration from source code.**
-2. **Use environment variables for deployment-specific settings.**
-3. **Use `.env` for convenient local development.**
-4. **Never commit real secrets to version control.**
-5. **Validate configuration when the application starts.**
-6. **Allow production environments to override development settings.**
-7. **Use `python-dotenv` instead of implementing a custom `.env` parser.**
-
-## Conclusion
-
-The Oracle configuration system provides a simple example of secure configuration management in Python.
-
-The core principle is:
-
-> **Code belongs in version control. Secrets belong in the environment.**
-
-The Oracle sees all configurations — but the secrets don't need to be committed to the Matrix.
