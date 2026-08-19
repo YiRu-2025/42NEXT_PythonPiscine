@@ -1,6 +1,8 @@
-import importlib, sys
-from typing import Any
-
+import importlib
+import sys
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
 
 PACKAGES = {
     "pandas": "Data manipulation ready",
@@ -29,41 +31,28 @@ def check_installation() -> bool:
     return True
 
 
-
-def analyze_data(points: int = 1000) -> Any:
-    import numpy as np
-    import pandas as pd
-
-    print()
+def analyze_data(points: int = 1000) -> pd.DataFrame:
     print("Analyzing Matrix data...")
     gen = np.random.default_rng(42)
     a = gen.normal(75, 12, points)
     df = pd.DataFrame({"a": a})
     print(f"Processing {len(df)} data points...")
     return df
- 
- 
-def visualize_data(df: Any) -> None:
-    import numpy as np
-    import matplotlib.pyplot as plt
 
+
+def visualize_data(df: pd.DataFrame) -> None:
     print("Generating visualization...")
     data = df["a"]
- 
     plt.figure(figsize=(8, 5))
-    plt.hist(data, bins=30, color="green", edgecolor="black", alpha=0.7, density=True)
-    mean = data.mean()
-    std = data.std()
+    plt.hist(data, bins=30, color="green", edgecolor="black",
+             alpha=0.7, density=True)
     x = np.linspace(data.min(), data.max(), 200)
-    trend = (1 / (std * np.sqrt(2 * np.pi))) * np.exp(-0.5 * ((x - mean) / std) ** 2)
-    plt.plot(x, trend, color="red", linewidth=2, label="Trend")
- 
+    plt.plot(x, color="red", linewidth=2, label="Trend")
     plt.title("Data Distribution")
     plt.xlabel("Value")
     plt.ylabel("Density")
     plt.grid(True, alpha=0.3)
     plt.legend()
- 
     plt.savefig("matrix_analysis.png")
     plt.close()
 
@@ -73,13 +62,14 @@ def main():
 
     if not check_installation():
         sys.exit(1)
-    try: 
+    try:
         dataframe = analyze_data()
         visualize_data(dataframe)
     except Exception as e:
         print(e)
     print("\nAnalysis complete!")
     print("Results saved to: matrix_analysis.png")
+
 
 if __name__ == "__main__":
     main()

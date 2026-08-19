@@ -16,7 +16,7 @@ if not in_venv:
     print("python -m venv matrix_env")
     print("source matrix_env/bin/activate # On Unix")
     print("matrix_env\\Scripts\\activate # On Windows\n")
-    
+
     print("Then run this program again.")
 
 else:

@@ -1,5 +1,13 @@
+# Environment configuration — contains real secrets, never commit this
 .env
 .env.*
 !.env.example
+
+# Python
 __pycache__/
-*.py[cod]
+*.pyc
+.venv/
+venv/
+
+# Local dev artifacts
+local_dev.db
