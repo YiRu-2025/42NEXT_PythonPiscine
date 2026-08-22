@@ -32,12 +32,25 @@ This activity includes data generation tools to help you test your Pydantic mode
 This project includes 3 exercises using Pydantic v2 from basic to advanced level.
 
 Before running the python file, make sure to create and activate a virtual environment and install the Pydantic v2 via pip.
-
+## activate virtual env and install pydantic
 ```bash
 python3 -m venv virtual_env
 source virtual_env/bin/activate
 pip install pydantic
 ```
+## generate and export data for testing
+run the python file under data_generator folder to generate and export testing examples
+```bash
+python3 data_generator/data_generator.py
+python3 data_generator/data_exporter.py
+```
+
+it will create a folder named generated_data and and put all kinds of testing data
+
+## testing
+if not generate the data, you can also directly run the exercise file with two created examples inside.
+
+if use the generator to get some testing examples, you can directly run `python3 testing.py` to do the test.
 
 # Code explanation
 ## Field arguments for numeric constraints

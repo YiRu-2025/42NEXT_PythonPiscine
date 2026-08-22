@@ -4,6 +4,9 @@ from enum import Enum
 from typing import Optional, Self
 
 
+# Enum: Base class for creating enumerated constants.
+# They make code cleaner, more readable and prevent using invalid values.
+# Each member of an Enum has a name and a value.
 class ContactType(Enum):
     r = "radio"
     v = "visual"
@@ -22,6 +25,10 @@ class AlienContact(BaseModel):
     message_received: Optional[str] = Field(default=None, max_length=500)
     is_verified: bool = Field(default=False)
 
+    # After validators: run after the whole model has been validated.
+    # As such, they are defined as instance methods and can be seen
+    # as post-initialization hooks.
+    # Important note: the validated instance should be returned.
     @model_validator(mode='after')
     def validation_rules(self) -> Self:
         if not self.contact_id.startswith("AC"):
